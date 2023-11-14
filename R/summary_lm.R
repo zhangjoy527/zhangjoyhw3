@@ -1,10 +1,24 @@
-# summary_lm
-#
-# This function mimics the output of summary(lm()) by fitting a linear model.
-# It then returns the basic summary table of the summary() function, including
-# the OLS estimates, standard errors, t statistics, and p-values reported for
-# each beta value in our model
-#
+#' @title Linear Model Summary Table
+#'
+#' @description This function mimics the output of summary(lm()) by fitting a
+#' linear model. It then returns the basic summary table of the summary()
+#' function, including the OLS estimates, standard errors, t statistics, and
+#' p-values reported for each beta value in our model
+#'
+#' @param data The data used to perform regression on
+#'
+#' @param func The function for linear regression, in the formula y ~ x
+#'
+#' @return A data frame with basic summary information, mimicking the
+#' summary(lm()) function.
+#'
+#' @examples
+#' summary_lm(mtcars, disp ~ wt)
+#' summary_lm(mydata, Depression ~ Fatalism + Age + Sex + R_E)
+#'
+#' @export
+#'
+
 
 summary_lm <- function(data, func) {
   # Create the design matrix of the equation of interest, define the y variable
