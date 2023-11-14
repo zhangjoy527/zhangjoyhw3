@@ -18,6 +18,7 @@
 #'
 #' @export
 #'
+#'
 
 
 summary_lm <- function(data, func) {
