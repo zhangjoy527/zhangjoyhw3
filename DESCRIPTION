@@ -1,12 +1,12 @@
 Package: zhangjoyhw3
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Summary Table Linear Models
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Joy Zhang
+Maintainer: Joy Zhang <zhangjoy@umich.edu>
+Description: This package has a singular function that mimics the output of
+    Running summary(lm()).
+License: No licensing
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
