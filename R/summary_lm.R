@@ -20,7 +20,6 @@
 #'
 #'
 
-
 summary_lm <- function(data, func) {
   # Create the design matrix of the equation of interest, define the y variable
   # given the data, the number of rows and the number of columns.
