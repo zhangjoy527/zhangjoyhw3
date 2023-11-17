@@ -41,7 +41,7 @@ summary_lm <- function(data, func) {
   # the p-values
   se <- sqrt(diag(var_betahat))
   t_stat <- estimate / se
-  p_val <- 2*pt(t_stat, df = n - 2, lower.tail = F)
+  p_val <- 2*pt(abs(t_stat), df = n - 2, lower.tail = F)
 
   # Return a data frame containing the estimates, standard error, t-statistics,
   # and p-value
