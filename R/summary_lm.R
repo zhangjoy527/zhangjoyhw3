@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' summary_lm(mtcars, disp ~ wt)
-#' summary_lm(mydata, Depression ~ Fatalism + Age + Sex + R_E)
+#' summary_lm(mtcars, mpg ~ wt + disp + wt*disp)
 #'
 #' @export
 #'
