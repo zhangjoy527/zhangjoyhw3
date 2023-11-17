@@ -17,8 +17,8 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(zhangjoyhw3)
 data(mtcars)
-#install.packages("bench")
-library(bench)
+#install.packages("microbenchmark")
+library(microbenchmark)
 ```
 
 ## Usage of 'summary_lm()' on an outcome variable with a single predictor:
@@ -106,14 +106,13 @@ All our values are equal. Again we add the tolerance parameter for inconsistenci
 One last thing we would like to check is the speed of our function compared to the pre-existing ones. 
 
 ```{r}
-bench::mark(summary_lm(data = mtcars, mpg ~ disp + wt + disp*wt), 
+microbenchmark(summary_lm(data = mtcars, mpg ~ disp + wt + disp*wt), 
             summary(lm(data = mtcars, mpg ~ disp + wt + disp*wt)))
 
-system.time(summary_lm(data = mtcars, mpg ~ disp + wt))
-system.time(summary(lm(data = mtcars, mpg ~ disp + wt)))
+#system.time(summary_lm(data = mtcars, mpg ~ disp + wt))
+#system.time(summary(lm(data = mtcars, mpg ~ disp + wt)))
 ```
 
-We see that our new function runs almost just as smoothly as the preexisting one. 
-
+We see that our new function runs fast, but not as fast as using the preexisting R functions. 
 
 
