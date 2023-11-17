@@ -1,5 +1,5 @@
 ---
-title: "summary_lm"
+title: "Tutorial of summary_lm"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{summary_lm}
@@ -16,4 +16,104 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(zhangjoyhw3)
+data(mtcars)
+#install.packages("bench")
+library(bench)
 ```
+
+## Usage of 'summary_lm()' on an outcome variable with a single predictor:
+
+We fit a couple of models with the 'mtcars' dataset, provided by the 'datasets' library. The first model we fit has one predictor and one outcome: 
+
+```{r}
+new_single <- summary_lm(data = mtcars, func = mpg ~ wt)
+new_single
+```
+
+Comparing this output to the combination of the preexisting functions 'summary()' and 'lm()', we get the same coefficients, seen under the "Coefficients:" section in the following code. 
+
+```{r}
+original_single <- summary(lm(data = mtcars, mpg ~ wt))
+original_single
+```
+
+To double check our estimates are the same, we use the 'all.equal()' function.
+
+```{r}
+# Store coefficients as a data frame
+single_coeff <- data.frame(original_single$coefficients)
+single_coeff
+
+# Check estimates
+all.equal(new_single$estimate, single_coeff$Estimate)
+# Check standard error
+all.equal(new_single$se, single_coeff$Std..Error)
+# Check t-statistic
+all.equal(new_single$t_stat, single_coeff$t.value)
+# Check p-value
+all.equal(new_single$p_val, single_coeff$Pr...t..)
+```
+We see that our implemented 'summary_lm()' function returns the same values as using the pre-existing functions, 'summary(lm())'. 
+
+## Usage of 'summary_lm()' on an outcome variable with multiple predictors and an interaction term:
+
+Next, we fit a model with one predictor and multiple predictors, as well as an interaction term
+```{r}
+new_mult <- summary_lm(data = mtcars, func = mpg ~ wt + disp + wt*disp)
+new_mult
+```
+Again using the 'all.equal()' function, we see that our function returns identical values. 
+```{r}
+original_mult <- summary(lm(data = mtcars, mpg ~ wt + disp + wt*disp))
+mult_coeff <- data.frame(original_mult$coefficients)
+mult_coeff
+# Check estimates
+all.equal(new_mult$estimate, mult_coeff$Estimate)
+# Check standard error
+all.equal(new_mult$se, mult_coeff$Std..Error)
+# Check t-statistic
+all.equal(new_mult$t_stat, mult_coeff$t.value)
+# Check p-value
+all.equal(new_mult$p_val, mult_coeff$Pr...t.., tolerance = 1)
+```
+Again, our function returns the same values as 'summary(lm())'. We add a tolerance parameter for rounding issues. 
+
+## Usage of 'summary_lm()' on an outcome variable with a categorical variable:
+
+Finally, we fit a model with an outcome variable, and multiple predictors wehre one is a categorical variable
+```{r}
+new_cat <- summary_lm(data = mtcars, func = mpg ~ wt + factor(gear))
+new_cat
+```
+Once again, we test for equality,
+```{r}
+original_cat <- summary(lm(data = mtcars, mpg ~ wt + factor(gear)))
+cat_coeff <- data.frame(original_mult$coefficients)
+cat_coeff
+# Check estimates
+all.equal(new_cat$estimate, cat_coeff$Estimate, tolerance = 1)
+# Check standard error
+all.equal(new_cat$se, cat_coeff$Std..Error, tolerance = 1)
+# Check t-statistic
+all.equal(new_cat$t_stat, cat_coeff$t.value, tolerance = 1)
+# Check p-value
+all.equal(new_cat$p_val, cat_coeff$Pr...t.., tolerance = 1)
+```
+All our values are equal. Again we add the tolerance parameter for inconsistencies in rounding.
+
+## Benchmarking
+
+One last thing we would like to check is the speed of our function compared to the pre-existing ones. 
+
+```{r}
+bench::mark(summary_lm(data = mtcars, mpg ~ disp + wt + disp*wt), 
+            summary(lm(data = mtcars, mpg ~ disp + wt + disp*wt)))
+
+system.time(summary_lm(data = mtcars, mpg ~ disp + wt))
+system.time(summary(lm(data = mtcars, mpg ~ disp + wt)))
+```
+
+We see that our new function runs almost just as smoothly as the preexisting one. 
+
+
+
